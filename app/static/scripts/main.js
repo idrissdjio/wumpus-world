@@ -4,7 +4,8 @@ $(document).ready(function(){
 
     const socket = io();
 
-    socket.on('update_status', (data)=>{
+    if (socket) {
+        socket.on('update_status', (data)=>{
         curr = $(".curr_room")
         curr.removeClass("curr_room")
 
@@ -32,55 +33,61 @@ $(document).ready(function(){
         room.addClass("curr_room")
     })
 
-    //actions
+        //actions
 
-    $('.left').click(function(){
-        if (playing) socket.emit('next_pos', {'action':'left'})
-    })
-
-    $('.right').click(function(){
-        if (playing) socket.emit('next_pos', {'action':'right'})
-    })
-
-    $('.up').click(function(){
-        if (playing) socket.emit('next_pos', {'action':'up'})
-    })
-
-    $('.down').click(function(){
-        if (playing) socket.emit('next_pos', {'action':'down'})
-    })
-
-    $('.arrow').click(function(){
-        if (playing) socket.emit('next_pos', {'action':'arrow'})
-    })
-
-    // win or lose
-    socket.on('win', (data)=>{
-        $('.win').css("display", "flex")
-        $('.win').show("fast")
-        playing = false
-    })
-
-    // detecting arrow keys
-    $(document).keydown(function(e) {
-        if (e.keyCode == 37) {
-            //left
+        $('.left').click(function(){
             if (playing) socket.emit('next_pos', {'action':'left'})
-        } else if (e.keyCode == 38) {
-            //up
-            if (playing) socket.emit('next_pos', {'action':'up'})
-        } else if (e.keyCode == 39) {
-            //right
-            if (playing) socket.emit('next_pos', {'action':'right'})
-        } else if (e.keyCode == 40) {
-            //down
-            if (playing) socket.emit('next_pos', {'action':'down'})
-        }
-    })
+        })
 
-    socket.on('lose', (data)=>{
-        $('.lose').show("fast")
-        playing = false
-    })
+        $('.right').click(function(){
+            if (playing) socket.emit('next_pos', {'action':'right'})
+        })
+
+        $('.up').click(function(){
+            if (playing) socket.emit('next_pos', {'action':'up'})
+        })
+
+        $('.down').click(function(){
+            if (playing) socket.emit('next_pos', {'action':'down'})
+        })
+
+        $('.arrow').click(function(){
+            if (playing) socket.emit('next_pos', {'action':'arrow'})
+        })
+
+                // win or lose
+        socket.on('win', (data)=>{
+            $('.win').css("display", "flex")
+            $('.win').show("fast")
+            playing = false
+        })
+
+        // detecting arrow keys
+        $(document).keydown(function(e) {
+            if (e.keyCode == 37) {
+                //left
+                if (playing) socket.emit('next_pos', {'action':'left'})
+            } else if (e.keyCode == 38) {
+                //up
+                if (playing) socket.emit('next_pos', {'action':'up'})
+            } else if (e.keyCode == 39) {
+                //right
+                if (playing) socket.emit('next_pos', {'action':'right'})
+            } else if (e.keyCode == 40) {
+                //down
+                if (playing) socket.esmit('next_pos', {'action':'down'})
+            }
+        })
+
+        socket.on('lose', (data)=>{
+            $('.lose').show("fast")
+            playing = false
+        })
+
+    } else {
+        console.log('Object is falsy');
+    }
+
+
 
 })
